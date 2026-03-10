@@ -14,8 +14,8 @@
   --font-main: 'Noto Serif JP', serif;
   --font-display: 'Zen Antique', serif;
 
-  /* 🌟 動的な基準サイズ: 画面幅に応じて 14px 〜 18px で変動 */
-  font-size: clamp(14px, 1.2vw, 18px);
+  /* 動的な基準サイズ: 縦長画面でも適切にスケール (14px〜22px) */
+  font-size: clamp(14px, 1.8vw, 22px);
 }
 
 body {

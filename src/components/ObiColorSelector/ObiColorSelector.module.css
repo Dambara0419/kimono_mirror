@@ -8,7 +8,7 @@
 
 .label {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: clamp(0.65rem, 1.4vw, 0.95rem);
   color: var(--color-secondary);
   text-align: center;
   opacity: 0.8;
@@ -17,7 +17,7 @@
 .group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: clamp(5px, 0.8vw, 10px);
   width: 100%;
 }
 
@@ -31,9 +31,9 @@
 }
 
 .swatch {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%; /* 丸型に変更して「和」の玉をイメージ */
+  width: clamp(16px, 2vw, 28px);
+  height: clamp(16px, 2vw, 28px);
+  border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.4);
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
@@ -46,7 +46,7 @@
 }
 
 .mainName {
-  font-size: 0.6rem;
+  font-size: clamp(0.65rem, 1.4vw, 0.95rem);
   font-weight: 500;
   color: #fff;
 }

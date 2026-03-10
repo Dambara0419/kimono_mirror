@@ -70,50 +70,51 @@
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 8px;
+  padding: clamp(6px, 1vw, 12px);
   pointer-events: auto;
-  width: clamp(70px, 13vw, 180px);
-  max-height: 35vh;
+  width: clamp(80px, 15vw, 220px);
+  max-height: 40vh;
   overflow-y: auto;
   scrollbar-width: none;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 .panel::-webkit-scrollbar { display: none; }
 
-/* スマホ版のさらなるスリム化 */
-@media (max-width: 600px) {
+/* スマホ（小画面）での調整 */
+@media (max-width: 480px) {
   .panel {
-    width: 16vw; 
-    padding: 6px;
+    width: clamp(70px, 18vw, 100px);
+    padding: 5px;
     border-radius: 12px;
   }
   .midSection {
-    padding: 0 3vw; /* スマホでも確実に縁から離す */
+    padding: 0 2vw;
+  }
+}
+
+/* タブレット〜大型モニター */
+@media (min-width: 768px) {
+  .panel {
+    width: clamp(120px, 14vw, 220px);
+    padding: clamp(8px, 1.2vw, 14px);
   }
 }
 
 .guidance {
   background: rgba(0, 0, 0, 0.6);
   color: var(--color-secondary);
-  padding: 6px 20px;
+  padding: clamp(6px, 1vh, 10px) clamp(16px, 3vw, 28px);
   border-radius: 50px;
-  font-size: 0.8rem;
+  font-size: clamp(0.75rem, 1.4vw, 1rem);
   border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .homeBtn {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: clamp(10px, 2vh, 24px);
+  left: clamp(10px, 2vw, 24px);
   z-index: 100;
   pointer-events: auto;
-}
-
-@media (max-width: 600px) {
-  .homeBtn {
-    top: 10px;
-    left: 10px;
-  }
 }
 
 .flash {

@@ -3,8 +3,8 @@
 }
 
 .shutterButton {
-  width: clamp(60px, 8vmin, 80px);
-  height: clamp(60px, 8vmin, 80px);
+  width: clamp(70px, 10vw, 110px);
+  height: clamp(70px, 10vw, 110px);
   border-radius: 50%;
   border: 3px solid rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.15);

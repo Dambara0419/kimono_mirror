@@ -8,7 +8,7 @@
 
 .settingLabel {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: clamp(0.65rem, 1.4vw, 0.95rem);
   color: var(--color-secondary);
   text-align: center;
   opacity: 0.8;
@@ -18,7 +18,7 @@
 .chipGroup {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: clamp(5px, 0.8vw, 10px);
   width: 100%;
 }
 
@@ -32,12 +32,12 @@
 }
 
 .personIcon {
-  font-size: 1.4rem;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
   line-height: 1;
 }
 
 .personLabel {
-  font-size: 0.6rem;
+  font-size: clamp(0.65rem, 1.4vw, 0.95rem);
   font-weight: 500;
   color: #fff;
   letter-spacing: 0.05em;
