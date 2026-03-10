@@ -1,0 +1,42 @@
+.button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: rgba(15, 18, 22, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-secondary);
+  border-radius: 50px;
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  white-space: nowrap;
+}
+
+/* 🌟 スマホ時の劇的縮小 */
+@media (max-width: 600px) {
+  .button {
+    padding: 8px 12px;
+    gap: 6px;
+    font-size: 0.75rem;
+    border-radius: 30px;
+  }
+}
+
+.button span {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hovering {
+  transform: scale(1.05);
+  background: var(--color-secondary);
+  color: #000;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
+.hovering span {
+  text-shadow: none;
+}

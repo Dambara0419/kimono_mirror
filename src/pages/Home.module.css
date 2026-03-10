@@ -1,0 +1,130 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  overflow: hidden;
+}
+
+/* 背景の和柄（麻の葉パターンなどをCSSグラデーションで表現） */
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(30deg, #222 12%, transparent 12.5%, transparent 87%, #222 87.5%, #222),
+    linear-gradient(150deg, #222 12%, transparent 12.5%, transparent 87%, #222 87.5%, #222),
+    linear-gradient(30deg, #222 12%, transparent 12.5%, transparent 87%, #222 87.5%, #222),
+    linear-gradient(150deg, #222 12%, transparent 12.5%, transparent 87%, #222 87.5%, #222),
+    linear-gradient(60deg, #333 25%, transparent 25.5%, transparent 75%, #333 75%, #333),
+    linear-gradient(60deg, #333 25%, transparent 25.5%, transparent 75%, #333 75%, #333);
+  background-size: 80px 140px;
+  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+  opacity: 0.1;
+  z-index: 0;
+  animation: bgScroll 60s linear infinite;
+}
+
+@keyframes bgScroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 1000px; }
+}
+
+.mainContent {
+  z-index: 10;
+  text-align: center;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  margin: 0;
+  background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  letter-spacing: 0.1em;
+}
+
+.subtitle {
+  font-family: var(--font-main);
+  font-size: 1.5rem;
+  margin: 20px 0 40px;
+  color: #ddd;
+  letter-spacing: 0.2em;
+}
+
+.startButton {
+  font-family: var(--font-main);
+  font-size: 1.8rem;
+  padding: 15px 60px;
+  background: transparent;
+  color: var(--color-text);
+  border: 2px solid var(--color-secondary);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.startButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+
+.startButton:hover {
+  background: var(--color-secondary);
+  color: #000;
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+}
+
+.startButton:hover::before {
+  left: 100%;
+}
+
+.settingsButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  z-index: 20;
+  transition: color 0.3s;
+}
+
+.settingsButton:hover {
+  color: white;
+}

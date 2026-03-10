@@ -1,0 +1,126 @@
+/* pages/Yukata.module.css */
+
+.container {
+  width: 100vw;
+  height: 100svh;
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.cameraLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.uiLayer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  /* 🌟 安全圏（Safe Area）を考慮しつつ、はみ出しを防ぐ */
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+}
+
+.topSection {
+  height: 18%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+/* 🌟 コンテナ幅を100%に固定し、パディングを内側に効かせる */
+.midSection {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5vw; /* 🌟 4vwから5vwに増やして、よりはっきりとした隙間を確保 */
+  width: 100%;
+}
+
+.bottomSection {
+  height: 18%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.rightSideWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  pointer-events: none;
+  max-height: 75vh;
+  justify-content: center;
+  align-items: flex-end; /* 🌟 右端に寄せる */
+}
+
+.panel {
+  background: rgba(15, 18, 22, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 8px;
+  pointer-events: auto;
+  width: clamp(70px, 13vw, 180px);
+  max-height: 35vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.panel::-webkit-scrollbar { display: none; }
+
+/* スマホ版のさらなるスリム化 */
+@media (max-width: 600px) {
+  .panel {
+    width: 16vw; 
+    padding: 6px;
+    border-radius: 12px;
+  }
+  .midSection {
+    padding: 0 3vw; /* スマホでも確実に縁から離す */
+  }
+}
+
+.guidance {
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--color-secondary);
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.homeBtn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+@media (max-width: 600px) {
+  .homeBtn {
+    top: 10px;
+    left: 10px;
+  }
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  z-index: 999;
+  animation: flashOut 0.4s forwards;
+}
+@keyframes flashOut { 0% { opacity: 1; } 100% { opacity: 0; } }
