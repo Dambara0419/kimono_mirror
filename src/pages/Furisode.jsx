@@ -1,11 +1,10 @@
-// pages/Yukata.jsx
+// pages/Furisode.jsx
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Camera from '../components/Camera';
 import ShutterButton from '../components/ShutterButton/ShutterButton';
 import HomeButton from '../components/HomeButton/HomeButton';
-import PersonSelector from '../components/PromptSelectors/PersonSelector';
 import ObiColorSelector from '../components/ObiColorSelector/ObiColorSelector';
 import BackgroundSelector from '../components/PromptSelectors/BackgroundSelector';
 import { HandTrackingProvider, useHandTrackingContext } from '../contexts/HandTrackingContext';
@@ -21,9 +20,8 @@ function Guidance() {
   );
 }
 
-export default function Yukata() {
+export default function Furisode() {
   const navigate = useNavigate();
-  const [targetPerson, setTargetPerson] = useState('woman');
   const [obiColor, setObiColor] = useState('auto');
   const [backgroundStyle, setBackgroundStyle] = useState('style_studio');
   const [isCapturing, setIsCapturing] = useState(false);
@@ -38,9 +36,9 @@ export default function Yukata() {
   const handleCapture = (photoData) => {
     if (isCapturing) return;
     setIsCapturing(true);
-    sessionStorage.setItem('costumeMode', 'yukata');
+    sessionStorage.setItem('costumeMode', 'furisode');
     sessionStorage.setItem('originalPhoto', photoData);
-    sessionStorage.setItem('targetPerson', targetPerson);
+    sessionStorage.setItem('targetPerson', 'woman');
     sessionStorage.setItem('obiColor', obiColor);
     sessionStorage.setItem('backgroundStyle', backgroundStyle);
     setTimeout(() => navigate('/preview'), 200);
@@ -70,11 +68,8 @@ export default function Yukata() {
             {/* 中央: 空間（被写体用） */}
             <div style={{ flex: 1, pointerEvents: 'none' }} />
 
-            {/* 右: 人物と背景 */}
+            {/* 右: 背景選択のみ（振袖は女性固定のためPersonSelectorなし） */}
             <div className={styles.rightSideWrapper}>
-              <aside className={styles.panel}>
-                <PersonSelector value={targetPerson} onChange={setTargetPerson} />
-              </aside>
               <aside className={styles.panel}>
                 <BackgroundSelector value={backgroundStyle} onChange={setBackgroundStyle} />
               </aside>
