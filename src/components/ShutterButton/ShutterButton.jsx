@@ -3,7 +3,7 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import useGestureHover from '../../hooks/useGestureHover';
 import styles from './ShutterButton.module.css';
 
-export default function ShutterButton({ videoRef, onCapture, position = 'bottom' }) {
+export default function ShutterButton({ videoRef, onCapture, position = 'bottom', isFrontCamera = true }) {
   const canvasRef = useRef(null);
   const buttonRef = useRef(null);
   const [countdown, setCountdown] = useState(null);
@@ -39,8 +39,10 @@ export default function ShutterButton({ videoRef, onCapture, position = 'bottom'
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
+        if (isFrontCamera) {
+          ctx.translate(canvas.width, 0);
+          ctx.scale(-1, 1);
+        }
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         onCapture(canvas.toDataURL('image/jpeg'));
       }
