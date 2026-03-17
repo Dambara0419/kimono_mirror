@@ -28,7 +28,7 @@ const GENDER_CONFIG = {
   default: {
     subject: "女性",
     style: "美しい女性のスタイル",
-    obiTerm: "「半幅帯」，「浴衣帯」，無地の帯",
+    obiTerm: "「半幅帯」，「浴衣帯」，無地の帯, 紐はなしで。シンプルに帯だけで。",
     obiInstruction: "ウエストの高い位置で締めてください。",
   },
 };
