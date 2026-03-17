@@ -63,6 +63,7 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
 
     // 準備ができ次第開始
     const checkReady = () => {
+      if (!isComponentMounted) return;
       if (window.Hands && videoRef.current) {
         initMediaPipe();
       } else {

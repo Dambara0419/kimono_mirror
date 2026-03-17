@@ -32,6 +32,8 @@ export default function Yukata() {
     return saved !== null ? saved === 'true' : true;
   });
   const videoRef = useRef(null);
+  const [preferredCameraId] = useState(() => localStorage.getItem('preferredCameraId') || '');
+  const [isFrontCamera, setIsFrontCamera] = useState(true);
 
   const handleCapture = (photoData) => {
     if (isCapturing) return;
@@ -48,14 +50,14 @@ export default function Yukata() {
       <div className={styles.container}>
         
         <div className={styles.cameraLayer}>
-          <Camera videoRef={videoRef} />
+          <Camera videoRef={videoRef} deviceId={preferredCameraId || undefined} onFacingModeChange={setIsFrontCamera} />
         </div>
 
         <div className={styles.uiLayer}>
           
           <section className={styles.topSection}>
             <Guidance />
-            <ShutterButton videoRef={videoRef} onCapture={handleCapture} position="top" />
+            <ShutterButton videoRef={videoRef} onCapture={handleCapture} position="top" isFrontCamera={isFrontCamera} />
           </section>
 
           <section className={styles.midSection}>
@@ -79,7 +81,7 @@ export default function Yukata() {
           </section>
 
           <section className={styles.bottomSection}>
-            <ShutterButton videoRef={videoRef} onCapture={handleCapture} position="bottom" />
+            <ShutterButton videoRef={videoRef} onCapture={handleCapture} position="bottom" isFrontCamera={isFrontCamera} />
           </section>
 
         </div>

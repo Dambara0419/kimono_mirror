@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function Camera({ deviceId, videoRef }) {
+function Camera({ deviceId, videoRef, onFacingModeChange }) {
   const [isFrontCamera, setIsFrontCamera] = useState(true);
 
   useEffect(() => {
@@ -50,6 +50,7 @@ function Camera({ deviceId, videoRef }) {
                          label.includes('environment');
           
           setIsFrontCamera(!isBack);
+          onFacingModeChange?.(!isBack);
         }
       } catch (error) {
         console.error("Camera start error:", error);

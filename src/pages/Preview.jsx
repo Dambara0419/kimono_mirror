@@ -20,7 +20,7 @@ export default function Preview() {
     const saved = localStorage.getItem('useMediaPipe');
     return saved !== null ? saved === 'true' : true;
   });
-  const [targetCameraId] = useState(() => localStorage.getItem('preferredCameraId'));
+  const [targetCameraId] = useState(() => localStorage.getItem('preferredCameraId') || undefined);
 
   const videoRef = useRef(null);
 
@@ -88,9 +88,9 @@ export default function Preview() {
                 <h2 className={styles.loadingTitle}>AIが着付けをしております...</h2>
                 <p className={styles.loadingSubtitle}>しばらくお待ちください</p>
               </div>
-            ) : (
+            ) : generatedImage ? (
               <img src={generatedImage} alt="Generated Yukata" className={styles.generatedImage} />
-            )}
+            ) : null}
           </div>
           <div className={styles.controlArea}>
             <GestureButton variant="panel" onClick={handleRetake}>
