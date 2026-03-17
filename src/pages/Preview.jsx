@@ -81,7 +81,7 @@ export default function Preview() {
   };
 
   return (
-    <HandTrackingProvider videoRef={videoRef} isEnabled={useAI}>
+    <HandTrackingProvider videoRef={videoRef} isEnabled={useAI && !isGenerating}>
       <div className={styles.container}>
         <div className={styles.cameraBackground}>
           {useAI && <Camera deviceId={targetCameraId} videoRef={videoRef} />}
