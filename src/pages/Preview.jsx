@@ -6,7 +6,8 @@ import Print from '../components/Print';
 import GestureButton from '../components/GestureButton/GestureButton';
 import { HandTrackingProvider } from '../contexts/HandTrackingContext';
 import HandPointer from '../components/HandPointer/HandPointer';
-import { buildYukataPrompt } from '../config/prompts';
+import { buildYukataPrompt } from '../config/yukataPrompt';
+import { buildFurisodePrompt } from '../config/furisodePrompt';
 import styles from './Preview.module.css';
 
 export default function Preview() {
@@ -29,18 +30,22 @@ export default function Preview() {
     hasRequested.current = true;
 
     const savedPhoto = sessionStorage.getItem('originalPhoto');
+    const costumeMode = sessionStorage.getItem('costumeMode') || 'yukata';
+    const captureRoute = `/${costumeMode}`;
     const gender = sessionStorage.getItem('targetPerson') || 'woman';
     const obiColor = sessionStorage.getItem('obiColor') || 'auto';
     const background = sessionStorage.getItem('backgroundStyle') || 'style_studio';
 
     if (!savedPhoto) {
-      navigate('/yukata');
+      navigate(captureRoute);
       return;
     }
 
     const generateYukata = async () => {
       try {
-        const promptText = buildYukataPrompt({ gender, obiColor, background });
+        const promptText = costumeMode === 'furisode'
+          ? buildFurisodePrompt({ obiColor, background })
+          : buildYukataPrompt({ gender, obiColor, background });
 
         const response = await fetch('/api/generate', {
           method: 'POST',
@@ -59,7 +64,7 @@ export default function Preview() {
         console.error('生成エラー:', error);
         alert(`処理が失敗しました。\n詳細: ${error.message}`);
         hasRequested.current = false;
-        navigate('/yukata');
+        navigate(captureRoute);
       } finally {
         setIsGenerating(false);
       }
@@ -69,9 +74,10 @@ export default function Preview() {
   }, [navigate]);
 
   const handleRetake = () => {
+    const costumeMode = sessionStorage.getItem('costumeMode') || 'yukata';
     sessionStorage.removeItem('originalPhoto');
     hasRequested.current = false;
-    navigate('/yukata');
+    navigate(`/${costumeMode}`);
   };
 
   return (

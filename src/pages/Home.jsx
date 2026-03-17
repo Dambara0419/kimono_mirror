@@ -8,16 +8,16 @@ export default function Home() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const startFitting = () => {
-    navigate('/yukata')
+  const startFitting = (mode) => {
+    navigate(`/${mode}`);
   }
 
   return (
     <div className={styles.container}>
-      
+
       {/* ギアアイコン */}
-      <button 
-        className={styles.settingsButton} 
+      <button
+        className={styles.settingsButton}
         onClick={() => setIsSettingsOpen(true)}
         title="設定"
       >
@@ -35,9 +35,17 @@ export default function Home() {
           </span>
         </p>
 
-        <button className={styles.startButton} onClick={startFitting}>
-          体験をはじめる
-        </button>
+        <p className={styles.modeLabel}>モードを選んでください</p>
+        <div className={styles.modeButtons}>
+          <button className={styles.modeButton} onClick={() => startFitting('yukata')}>
+            <span className={styles.modeIcon}>👘</span>
+            <span className={styles.modeName}>浴衣</span>
+          </button>
+          <button className={styles.modeButton} onClick={() => startFitting('furisode')}>
+            <span className={styles.modeIcon}>🎎</span>
+            <span className={styles.modeName}>振袖</span>
+          </button>
+        </div>
       </div>
 
       {isSettingsOpen && (
