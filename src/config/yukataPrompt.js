@@ -57,6 +57,7 @@ export function buildYukataPrompt({ gender, obiColor, background }) {
     `3. 帯（オビ）の仕様 - ${person.obiTerm}: \n` +
     `   - ${person.obiInstruction}\n` +
     `   - ${obiColorInfo} 手に帯を持っている場合は、その色や柄を必ず使用してください。\n` +
+    `   - 帯に帯紐、紐などの装飾を絶対につけないでください。結び目も作らないでください。\n` +
     "4. ポーズと手: \n" +
     "   - 人物は自然な立ち姿にしてください。\n" +
     "   - 服をすでに「着ている」状態なので、手には何も持たせず、体の横に自然に下ろすか、お腹の前で軽く組ませてください。\n" +
