@@ -3,7 +3,7 @@ import styles from './ObiColorSelector.module.css';
 
 export default function ObiColorSelector({ value, onChange }) {
   const options = [
-    // { id: 'auto', label: 'おまかせ', sub: '御任せ', color: '#8e8e93' }, 
+    { id: 'white', label: '白系', sub: '白色', color: '#fff' }, 
     { id: 'red', label: '赤系', sub: '緋色 (Hiiro)', color: '#b33e5c' },
     { id: 'blue', label: '青系', sub: '瑠璃色 (Ruri)', color: '#1e50a2' },
     { id: 'yellow', label: '黄系', sub: '黄金 (Kogane)', color: '#d4af37' },
