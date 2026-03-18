@@ -22,7 +22,7 @@ function Guidance() {
 
 export default function Furisode() {
   const navigate = useNavigate();
-  const [obiColor, setObiColor] = useState('auto');
+  const [obiColor, setObiColor] = useState('white');
   const [backgroundStyle, setBackgroundStyle] = useState('style_studio');
   const [isCapturing, setIsCapturing] = useState(false);
   const [useAI] = useState(() => {

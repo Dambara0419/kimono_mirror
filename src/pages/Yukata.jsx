@@ -24,7 +24,7 @@ function Guidance() {
 export default function Yukata() {
   const navigate = useNavigate();
   const [targetPerson, setTargetPerson] = useState('woman');
-  const [obiColor, setObiColor] = useState('auto');
+  const [obiColor, setObiColor] = useState('white');
   const [backgroundStyle, setBackgroundStyle] = useState('style_studio');
   const [isCapturing, setIsCapturing] = useState(false);
   const [useAI] = useState(() => {
