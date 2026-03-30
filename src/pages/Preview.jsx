@@ -63,14 +63,18 @@ export default function Preview() {
         const data = await response.json();
         setGeneratedImage(`data:image/jpeg;base64,${data.newImage}`);
 
-        const uploadRes = await fetch('/api/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ imageBase64: data.newImage }),
-        });
-        if (uploadRes.ok) {
-          const uploadData = await uploadRes.json();
-          setShareUrl(uploadData.url);
+        try {
+          const uploadRes = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageBase64: data.newImage }),
+          });
+          if (uploadRes.ok) {
+            const uploadData = await uploadRes.json();
+            setShareUrl(uploadData.url);
+          }
+        } catch (uploadError) {
+          console.error('アップロードエラー:', uploadError);
         }
       } catch (error) {
         console.error('生成エラー:', error);
