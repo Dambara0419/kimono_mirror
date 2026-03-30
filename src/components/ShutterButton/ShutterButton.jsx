@@ -35,8 +35,10 @@ export default function ShutterButton({ videoRef, onCapture, position = 'bottom'
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      const MAX_WIDTH = 1280;
+      const scale = Math.min(1, MAX_WIDTH / video.videoWidth);
+      canvas.width = video.videoWidth * scale;
+      canvas.height = video.videoHeight * scale;
       const ctx = canvas.getContext('2d');
       if (ctx) {
         if (isFrontCamera) {
@@ -44,7 +46,7 @@ export default function ShutterButton({ videoRef, onCapture, position = 'bottom'
           ctx.scale(-1, 1);
         }
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        onCapture(canvas.toDataURL('image/jpeg'));
+        onCapture(canvas.toDataURL('image/jpeg', 0.85));
       }
     }
   };

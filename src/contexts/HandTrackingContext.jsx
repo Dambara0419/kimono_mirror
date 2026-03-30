@@ -6,6 +6,7 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
   const [fingerPosition, setFingerPosition] = useState(null);
   const handsRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const lastProcessedTime = useRef(0);
 
   useEffect(() => {
     let isComponentMounted = true;
@@ -29,7 +30,7 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
 
       handsRef.current.setOptions({
         maxNumHands: 1,
-        modelComplexity: 1,
+        modelComplexity: 0,
         minDetectionConfidence: 0.7,
         minTrackingConfidence: 0.7,
       });
@@ -46,11 +47,15 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
 
       // 🌟 自前でカメラを起動せず、videoRefの映像をループで解析する
       const processVideo = async () => {
-        if (handsRef.current && videoRef.current && videoRef.current.readyState >= 2) {
-          try {
-            await handsRef.current.send({ image: videoRef.current });
-          } catch (e) {
-            console.error("MediaPipe Analysis Error:", e);
+        const now = Date.now();
+        if (now - lastProcessedTime.current >= 66) {
+          lastProcessedTime.current = now;
+          if (handsRef.current && videoRef.current && videoRef.current.readyState >= 2) {
+            try {
+              await handsRef.current.send({ image: videoRef.current });
+            } catch (e) {
+              console.error("MediaPipe Analysis Error:", e);
+            }
           }
         }
         if (isComponentMounted && isEnabled) {
