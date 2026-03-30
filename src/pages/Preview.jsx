@@ -1,6 +1,7 @@
 // pages/Preview.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import Camera from '../components/Camera';
 import Print from '../components/Print';
 import GestureButton from '../components/GestureButton/GestureButton';
@@ -16,6 +17,7 @@ export default function Preview() {
 
   const [generatedImage, setGeneratedImage] = useState(null);
   const [isGenerating, setIsGenerating] = useState(true);
+  const [shareUrl, setShareUrl] = useState(null);
 
   const [useAI] = useState(() => {
     const saved = localStorage.getItem('useMediaPipe');
@@ -60,6 +62,16 @@ export default function Preview() {
 
         const data = await response.json();
         setGeneratedImage(`data:image/jpeg;base64,${data.newImage}`);
+
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: data.newImage }),
+        });
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json();
+          setShareUrl(uploadData.url);
+        }
       } catch (error) {
         console.error('生成エラー:', error);
         alert(`処理が失敗しました。\n詳細: ${error.message}`);
@@ -99,6 +111,12 @@ export default function Preview() {
             ) : null}
           </div>
           <div className={styles.controlArea}>
+            {shareUrl && (
+              <div className={styles.qrArea}>
+                <QRCodeSVG value={shareUrl} size={120} />
+                <p className={styles.qrLabel}>スキャンして保存</p>
+              </div>
+            )}
             <GestureButton variant="panel" onClick={handleRetake}>
               <span style={{ fontSize: '24px' }}>📸</span>
               <span>もう一度撮影</span>
