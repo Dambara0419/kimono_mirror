@@ -62,6 +62,7 @@ export default function Preview() {
 
         const data = await response.json();
         setGeneratedImage(`data:image/jpeg;base64,${data.newImage}`);
+        setIsGenerating(false);
 
         try {
           const uploadRes = await fetch('/api/upload', {
@@ -78,11 +79,10 @@ export default function Preview() {
         }
       } catch (error) {
         console.error('生成エラー:', error);
+        setIsGenerating(false);
         alert(`処理が失敗しました。\n詳細: ${error.message}`);
         hasRequested.current = false;
         navigate(captureRoute);
-      } finally {
-        setIsGenerating(false);
       }
     };
 
