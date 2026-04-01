@@ -13,14 +13,14 @@ export default async function handler(req, res) {
 
   const aspectRatio = '2:3';
   const resolusion = '1K'
+  const t0 = Date.now();
 
   try {
     const pureBase64 = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
-    
+
     // プロジェクトのライブラリ仕様（@google/genai）に合わせた初期化
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-    console.log("⏳ Generating image (Fast Mode)...");
+    console.log(`[generate] start — prompt: ${promptText.length} chars, image: ${pureBase64.length} chars (~${Math.round(pureBase64.length * 0.75 / 1024)}KB)`);
 
     // 🌟 ご指定の最新プレビューモデルを使用
     const response = await ai.models.generateContent({
@@ -52,14 +52,18 @@ export default async function handler(req, res) {
     }
 
     if (generatedImageBase64) {
+      const elapsed = Date.now() - t0;
+      console.log(`[generate] done — ${elapsed}ms, output: ~${Math.round(generatedImageBase64.length * 0.75 / 1024)}KB`);
       res.status(200).json({ newImage: generatedImageBase64 });
     } else {
-      console.error("Failed to extract image from response:", JSON.stringify(response));
+      const elapsed = Date.now() - t0;
+      console.error(`[generate] no image in response — ${elapsed}ms`, JSON.stringify(response));
       res.status(500).json({ error: 'Failed to extract image' });
     }
 
   } catch (error) {
-    console.error("🔥 Gemini API Error:", error);
+    const elapsed = Date.now() - t0;
+    console.error(`[generate] error — ${elapsed}ms`, error.message);
     res.status(500).json({ error: 'Gemini API Error', message: error.message });
   }
 }
