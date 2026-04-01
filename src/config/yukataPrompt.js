@@ -41,7 +41,7 @@ export function buildYukataPrompt({ gender, obiColor, background }) {
 
   return (
     "あなたはプロのAIファッションスタイリスト兼フォトエディターです。" +
-    "入力画像を元に、超高画質な写真を生成してください。" +
+    "入力画像を元に、写真を生成してください。" +
     `現在、画像の人物は手に${garmentType}を持っています。` +
     `あなたの任務は、その手に持っている${garmentType}を、実際にその人物に着せることです。` +
     `被写体：${person.subject}、${person.style}。` +
