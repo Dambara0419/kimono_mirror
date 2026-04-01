@@ -11,6 +11,9 @@ export default async function handler(req, res) {
   const { imageBase64, promptText } = req.body;
   if (!imageBase64 || !promptText) return res.status(400).json({ error: 'Missing data' });
 
+  const aspectRatio = '2:3';
+  const resolusion = '1K'
+
   try {
     const pureBase64 = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
     
@@ -30,6 +33,10 @@ export default async function handler(req, res) {
       ],
       config: {
         responseModalities: ["TEXT", "IMAGE"],
+        imageConfig : {
+          aspectRatio : aspectRatio,
+          imageSize : resolusion,
+        },
       },
     });
 
