@@ -17,7 +17,7 @@ const GENDER_CONFIG = {
   },
   child: {
     subject: "子供（幼児〜小学生程度）",
-    style: "かわいらしい子供らしいスタイル,笑顔",
+    style: "かわいらしい子供らしいスタイル",
     obiTerm: "「兵児帯（へこおび）」（子供用の柔らかい布帯）",
     obiInstruction:
       "シンプルな「兵児帯（へこおび）」を使ってください。" +
