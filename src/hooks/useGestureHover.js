@@ -24,7 +24,7 @@ export default function useGestureHover(buttonRef, onActivate, options = {}) {
     padding = GESTURE_HIT_PADDING,
   } = options;
 
-  const { fingerPosition } = useHandTrackingContext();
+  const { fingerPositions } = useHandTrackingContext();
   const [progress, setProgress] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
 
@@ -47,16 +47,18 @@ export default function useGestureHover(buttonRef, onActivate, options = {}) {
   useEffect(() => {
     if (!buttonRef.current || isBlockedRef.current) return;
 
-    if (fingerPosition) {
+    if (fingerPositions.length > 0) {
       const rect = buttonRef.current.getBoundingClientRect();
-      const fingerX = (1 - fingerPosition.x) * window.innerWidth;
-      const fingerY = fingerPosition.y * window.innerHeight;
-
-      const isInside =
-        fingerX >= rect.left - padding &&
-        fingerX <= rect.right + padding &&
-        fingerY >= rect.top - padding &&
-        fingerY <= rect.bottom + padding;
+      const isInside = fingerPositions.some(fp => {
+        const fingerX = (1 - fp.x) * window.innerWidth;
+        const fingerY = fp.y * window.innerHeight;
+        return (
+          fingerX >= rect.left - padding &&
+          fingerX <= rect.right + padding &&
+          fingerY >= rect.top - padding &&
+          fingerY <= rect.bottom + padding
+        );
+      });
 
       if (isInside) {
         if (!isHovering) {
@@ -88,7 +90,7 @@ export default function useGestureHover(buttonRef, onActivate, options = {}) {
     } else {
       if (isHovering) reset();
     }
-  }, [fingerPosition, isHovering, duration, cooldown, padding, buttonRef, reset]);
+  }, [fingerPositions, isHovering, duration, cooldown, padding, buttonRef, reset]);
 
   // Cleanup on unmount
   useEffect(() => {

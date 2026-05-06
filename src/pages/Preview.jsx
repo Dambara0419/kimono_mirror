@@ -80,7 +80,7 @@ export default function Preview() {
       } catch (error) {
         console.error('生成エラー:', error);
         setIsGenerating(false);
-        alert(`処理が失敗しました。\n詳細: ${error.message}`);
+        alert(`処理が失敗しました。/ Generation failed.\n詳細 / Detail: ${error.message}`);
         hasRequested.current = false;
         navigate(captureRoute);
       }
@@ -107,8 +107,8 @@ export default function Preview() {
             {isGenerating ? (
               <div className={styles.loadingBox}>
                 <div className={styles.spinner}></div>
-                <h2 className={styles.loadingTitle}>AIが着付けをしております...</h2>
-                <p className={styles.loadingSubtitle}>しばらくお待ちください</p>
+                <h2 className={styles.loadingTitle}>AIが着付けをしております...<br />AI is dressing you up...</h2>
+                <p className={styles.loadingSubtitle}>しばらくお待ちください<br />Please wait a moment</p>
               </div>
             ) : generatedImage ? (
               <img src={generatedImage} alt="Generated Yukata" className={styles.generatedImage} />
@@ -118,14 +118,14 @@ export default function Preview() {
             {shareUrl && (
               <div className={styles.qrArea}>
                 <QRCodeSVG value={shareUrl} size={120} />
-                <p className={styles.qrLabel}>スキャンして保存</p>
+                <p className={styles.qrLabel}>スキャンして保存 / Scan to save</p>
               </div>
             )}
             <GestureButton variant="panel" onClick={handleRetake}>
               <span style={{ fontSize: '24px' }}>📸</span>
-              <span>もう一度撮影</span>
+              <span>もう一度撮影 / Retake</span>
             </GestureButton>
-            <Print generatedImage={generatedImage} />
+            {/* <Print generatedImage={generatedImage} /> */}
           </div>
         </div>
         <HandPointer />

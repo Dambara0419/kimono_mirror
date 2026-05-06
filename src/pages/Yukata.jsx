@@ -13,10 +13,13 @@ import HandPointer from '../components/HandPointer/HandPointer';
 import styles from './Yukata.module.css';
 
 function Guidance() {
-  const { fingerPosition } = useHandTrackingContext();
+  const { fingerPositions } = useHandTrackingContext();
   return (
     <div className={styles.guidance}>
-      {fingerPosition ? "設定を選び、シャッターへ手をかざしてください" : "画面の前に立ってください"}
+      {fingerPositions.length > 0
+        ? <>設定を選び、シャッターへ手をかざしてください<br />Choose options and hover your hand over the shutter</>
+        : <>画面の前に立ってください<br />Please stand in front of the screen</>
+      }
     </div>
   );
 }
@@ -32,6 +35,7 @@ export default function Yukata() {
     return saved !== null ? saved === 'true' : true;
   });
   const videoRef = useRef(null);
+  const isShootingRef = useRef(false);
   const [preferredCameraId] = useState(() => localStorage.getItem('preferredCameraId') || '');
   const [isFrontCamera, setIsFrontCamera] = useState(true);
 
@@ -58,7 +62,7 @@ export default function Yukata() {
 
           <section className={styles.topSection}>
             <Guidance />
-            <ShutterButton videoRef={videoRef} onCapture={handleCapture} position="top" isFrontCamera={isFrontCamera} />
+            <ShutterButton videoRef={videoRef} onCapture={handleCapture} position="top" isFrontCamera={isFrontCamera} isShootingRef={isShootingRef} />
           </section>
 
           <section className={styles.midSection}>
@@ -82,7 +86,7 @@ export default function Yukata() {
           </section>
 
           <section className={styles.bottomSection}>
-            <ShutterButton videoRef={videoRef} onCapture={handleCapture} position="bottom" isFrontCamera={isFrontCamera} />
+            <ShutterButton videoRef={videoRef} onCapture={handleCapture} position="bottom" isFrontCamera={isFrontCamera} isShootingRef={isShootingRef} />
           </section>
 
         </div>

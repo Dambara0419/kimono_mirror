@@ -3,16 +3,16 @@ import styles from './ObiColorSelector.module.css';
 
 export default function ObiColorSelector({ value, onChange }) {
   const options = [
-    { id: 'white', label: '白系', sub: '白色', color: '#fff' }, 
-    { id: 'red', label: '赤系', sub: '緋色 (Hiiro)', color: '#b33e5c' },
-    { id: 'blue', label: '青系', sub: '瑠璃色 (Ruri)', color: '#1e50a2' },
-    { id: 'yellow', label: '黄系', sub: '黄金 (Kogane)', color: '#d4af37' },
-    { id: 'black', label: '黒系', sub: '墨色 (Sumiiro)', color: '#2b2b2b' }
+    { id: 'white', label: 'White', sub: 'Shiro', color: '#fff' },
+    { id: 'red', label: 'Red', sub: 'Hiiro', color: '#b33e5c' },
+    { id: 'blue', label: 'Blue', sub: 'Ruri', color: '#1e50a2' },
+    { id: 'yellow', label: 'Yellow', sub: 'Kogane', color: '#d4af37' },
+    { id: 'black', label: 'Black', sub: 'Sumiiro', color: '#2b2b2b' }
   ];
 
   return (
     <div className={styles.container}>
-      <span className={styles.label}>帯の色・色彩</span>
+      <span className={styles.label}>Obi Color</span>
       <div className={styles.group}>
         {options.map(opt => (
           <GestureButton 

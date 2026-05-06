@@ -12,10 +12,13 @@ import HandPointer from '../components/HandPointer/HandPointer';
 import styles from './Yukata.module.css';
 
 function Guidance() {
-  const { fingerPosition } = useHandTrackingContext();
+  const { fingerPositions } = useHandTrackingContext();
   return (
     <div className={styles.guidance}>
-      {fingerPosition ? "設定を選び、シャッターへ手をかざしてください" : "画面の前に立ってください"}
+      {fingerPositions.length > 0
+        ? <>設定を選び、シャッターへ手をかざしてください<br />Choose options and hover your hand over the shutter</>
+        : <>画面の前に立ってください<br />Please stand in front of the screen</>
+      }
     </div>
   );
 }

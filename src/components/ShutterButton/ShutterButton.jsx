@@ -3,35 +3,14 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import useGestureHover from '../../hooks/useGestureHover';
 import styles from './ShutterButton.module.css';
 
-export default function ShutterButton({ videoRef, onCapture, position = 'bottom', isFrontCamera = true }) {
+export default function ShutterButton({ videoRef, onCapture, position = 'bottom', isFrontCamera = true, isShootingRef: externalShootingRef }) {
   const canvasRef = useRef(null);
   const buttonRef = useRef(null);
   const [countdown, setCountdown] = useState(null);
-  const isShootingRef = useRef(false);
+  const internalShootingRef = useRef(false);
+  const isShootingRef = externalShootingRef ?? internalShootingRef;
 
-  const triggerShutter = useCallback(() => {
-    if (isShootingRef.current) return;
-    isShootingRef.current = true;
-    setCountdown(3);
-  }, []);
-
-  const { progress: hoverProgress } = useGestureHover(buttonRef, triggerShutter, {
-    padding: 0,
-  });
-
-  useEffect(() => {
-    if (countdown === null) return;
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      takePhoto();
-      setCountdown(null);
-      setTimeout(() => { isShootingRef.current = false; }, 1000);
-    }
-  }, [countdown]);
-
-  const takePhoto = () => {
+  const takePhoto = useCallback(() => {
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
@@ -49,7 +28,29 @@ export default function ShutterButton({ videoRef, onCapture, position = 'bottom'
         onCapture(canvas.toDataURL('image/jpeg', 0.85));
       }
     }
-  };
+  }, [isFrontCamera, onCapture, videoRef]);
+
+  const triggerShutter = useCallback(() => {
+    if (isShootingRef.current) return;
+    isShootingRef.current = true;
+    setCountdown(3);
+  }, [isShootingRef]);
+
+  const { progress: hoverProgress } = useGestureHover(buttonRef, triggerShutter, {
+    padding: 0,
+  });
+
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      takePhoto();
+      setCountdown(null);
+      setTimeout(() => { isShootingRef.current = false; }, 1000);
+    }
+  }, [countdown, takePhoto, isShootingRef]);
 
   return (
     <>
