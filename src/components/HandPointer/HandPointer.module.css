@@ -1,15 +1,30 @@
 .pointer {
   position: absolute;
-  width: 32px;
-  height: 32px;
-  background-color: rgba(255, 71, 87, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.9);
+  width: 52px;
+  height: 52px;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.25) 0%, rgba(255, 71, 87, 0.08) 70%);
+  border: 3px solid #ffffff;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 20px rgba(255, 71, 87, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(2px);
-  z-index: 9999; /* 🌟 絶対に最前面にする */
+  box-shadow:
+    0 0 0 2px rgba(255, 71, 87, 1),
+    0 0 16px rgba(255, 71, 87, 0.9),
+    0 0 36px rgba(255, 71, 87, 0.55),
+    inset 0 0 14px rgba(255, 255, 255, 0.2);
+  z-index: 9999;
   pointer-events: none;
+}
+
+.pointer::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border: 2px solid rgba(255, 71, 87, 0.45);
+  border-radius: 50%;
+  animation: ping 1.8s ease-out infinite;
 }
 
 .pointer::after {
@@ -17,27 +32,33 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 6px;
-  height: 6px;
-  background-color: #fff;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 5px #fff;
+  box-shadow: 0 0 8px #ffffff, 0 0 16px rgba(255, 71, 87, 1);
+}
+
+@keyframes ping {
+  0%   { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.4);  opacity: 0; }
 }
 
 .trail {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: rgba(212, 175, 55, 0.6);
+  width: 14px;
+  height: 14px;
+  background-color: rgba(255, 71, 87, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  animation: fadeOut 0.5s ease-out forwards;
-  z-index: 9998; /* 🌟 ポインターのすぐ後ろ */
+  animation: fadeOut 0.4s ease-out forwards;
+  z-index: 9998;
   pointer-events: none;
 }
 
 @keyframes fadeOut {
-  0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+  0%   { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0;   transform: translate(-50%, -50%) scale(0.2); }
 }

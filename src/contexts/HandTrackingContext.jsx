@@ -3,7 +3,7 @@ import React, { createContext, useContext, useRef, useState, useEffect } from 'r
 const HandTrackingContext = createContext(null);
 
 export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) => {
-  const [fingerPosition, setFingerPosition] = useState(null);
+  const [fingerPositions, setFingerPositions] = useState([]);
   const handsRef = useRef(null);
   const animationFrameRef = useRef(null);
   const lastProcessedTime = useRef(0);
@@ -12,7 +12,7 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
     let isComponentMounted = true;
 
     if (!isEnabled) {
-      setFingerPosition(null);
+      setFingerPositions([]);
       if (handsRef.current) {
         handsRef.current.close();
         handsRef.current = null;
@@ -29,7 +29,7 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
       });
 
       handsRef.current.setOptions({
-        maxNumHands: 1,
+        maxNumHands: 2,
         modelComplexity: 0,
         minDetectionConfidence: 0.7,
         minTrackingConfidence: 0.7,
@@ -38,10 +38,13 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
       handsRef.current.onResults((results) => {
         if (!isComponentMounted) return;
         if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-          const indexFinger = results.multiHandLandmarks[0][8];
-          setFingerPosition({ x: indexFinger.x, y: indexFinger.y });
+          const positions = results.multiHandLandmarks.map(landmarks => ({
+            x: landmarks[8].x,
+            y: landmarks[8].y,
+          }));
+          setFingerPositions(positions);
         } else {
-          setFingerPosition(null);
+          setFingerPositions([]);
         }
       });
 
@@ -67,12 +70,13 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
     };
 
     // 準備ができ次第開始
+    let checkTimerId = null;
     const checkReady = () => {
       if (!isComponentMounted) return;
       if (window.Hands && videoRef.current) {
         initMediaPipe();
       } else {
-        setTimeout(checkReady, 500);
+        checkTimerId = setTimeout(checkReady, 500);
       }
     };
 
@@ -80,6 +84,7 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
 
     return () => {
       isComponentMounted = false;
+      if (checkTimerId) clearTimeout(checkTimerId);
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       if (handsRef.current) {
         handsRef.current.close();
@@ -89,7 +94,7 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
   }, [isEnabled, videoRef]);
 
   return (
-    <HandTrackingContext.Provider value={{ fingerPosition, isEnabled }}>
+    <HandTrackingContext.Provider value={{ fingerPositions, isEnabled }}>
       {children}
     </HandTrackingContext.Provider>
   );

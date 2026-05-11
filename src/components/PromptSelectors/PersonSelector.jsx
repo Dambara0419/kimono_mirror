@@ -4,14 +4,14 @@ import styles from './PromptSelectors.module.css';
 
 export default function PersonSelector({ value, onChange }) {
   const options = [
-    { id: 'woman', label: '女性', icon: '👘' },
-    { id: 'man', label: '男性', icon: '🥋' },
-    { id: 'child', label: '子供', icon: '🍡' }
+    { id: 'woman', label: 'Woman', icon: '👘' },
+    { id: 'man', label: 'Man', icon: '🥋' },
+    { id: 'child', label: 'Child', icon: '🍡' }
   ];
 
   return (
     <div className={styles.selectorContainer}>
-      <span className={styles.settingLabel}>モデル選択</span>
+      <span className={styles.settingLabel}>Model</span>
       <div className={styles.chipGroup}>
         {options.map(opt => (
           <GestureButton 

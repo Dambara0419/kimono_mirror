@@ -4,22 +4,24 @@ import { useHandTrackingContext } from '../../contexts/HandTrackingContext';
 import styles from './HomeButton.module.css';
 
 export default function HomeButton({ onClick }) {
-  const { fingerPosition } = useHandTrackingContext();
+  const { fingerPositions } = useHandTrackingContext();
   const [isHovering, setIsHovering] = useState(false);
   const hoverTimerRef = useRef(null);
   const isClickedRef = useRef(false);
 
   // AIの当たり判定（画面の右上エリア）
   useEffect(() => {
-    if (fingerPosition && !isClickedRef.current) {
-      const btnX_min = 0.0; 
+    const hasAnyFinger = fingerPositions.length > 0 && !isClickedRef.current;
+    if (hasAnyFinger) {
+      const btnX_min = 0.0;
       const btnX_max = 0.3; // 右から30%の範囲
-      const btnY_min = 0.0; 
+      const btnY_min = 0.0;
       const btnY_max = 0.2; // 上から20%の範囲
 
-      const isInside = 
-        fingerPosition.x > btnX_min && fingerPosition.x < btnX_max &&
-        fingerPosition.y > btnY_min && fingerPosition.y < btnY_max;
+      const isInside = fingerPositions.some(fp =>
+        fp.x > btnX_min && fp.x < btnX_max &&
+        fp.y > btnY_min && fp.y < btnY_max
+      );
 
       if (isInside) {
         if (!hoverTimerRef.current) {
@@ -46,7 +48,7 @@ export default function HomeButton({ onClick }) {
         setIsHovering(false);
       }
     }
-  }, [fingerPosition, onClick]);
+  }, [fingerPositions, onClick]);
 
   return (
     <button 
