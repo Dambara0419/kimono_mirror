@@ -32,63 +32,40 @@
   position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   z-index: 10;
 }
 
-@media (min-aspect-ratio: 1/1) {
-  .splitLayout {
-    flex-direction: row;
-  }
-}
-
 .imageArea {
-  flex: 2;
-  background: radial-gradient(circle at center, #2c3e50 0%, #000000 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   z-index: 11;
-  padding: 2vh;
 }
 
 .generatedImage {
-  max-width: 90%;
-  max-height: 85vh;
-  border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  border: 4px solid #fff;
 }
 
 .controlArea {
-  flex: 1;
-  background: rgba(15, 18, 22, 0.98);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 4vh;
-  position: relative;
-  z-index: 11;
-  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-  padding: 4vh 2vw;
-}
-
-/* 縦長画面（スマホなど）の場合の調整 */
-@media (max-aspect-ratio: 1/1) {
-  .controlArea {
-    flex: 0.8;
-    box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
-    flex-direction: row;
-    gap: 2vw;
-    padding: 2vh;
-  }
-  .generatedImage {
-    max-height: 50vh;
-  }
+  gap: 4vw;
+  z-index: 12;
+  padding: 2vh 4vw;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
 }
 
 .qrArea {
