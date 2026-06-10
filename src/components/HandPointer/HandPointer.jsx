@@ -3,7 +3,7 @@ import { useHandTrackingContext } from '../../contexts/HandTrackingContext';
 import styles from './HandPointer.module.css';
 
 export default function HandPointer() {
-  const { fingerPositions, isEnabled } = useHandTrackingContext();
+  const { fingerPositions, isEnabled, toScreenCoords } = useHandTrackingContext();
   const [trails, setTrails] = useState([]);
   const prevPositionsRef = useRef([]);
   const frameCountRef = useRef(0);
@@ -54,27 +54,33 @@ export default function HandPointer() {
 
   return (
     <>
-      {trails.map(trail => (
-        <div
-          key={trail.id}
-          className={styles.trail}
-          style={{
-            left: `${(1 - trail.x) * 100}%`,
-            top: `${trail.y * 100}%`,
-          }}
-        />
-      ))}
+      {trails.map(trail => {
+        const { x, y } = toScreenCoords(trail);
+        return (
+          <div
+            key={trail.id}
+            className={styles.trail}
+            style={{
+              left: `${x}px`,
+              top: `${y}px`,
+            }}
+          />
+        );
+      })}
 
-      {fingerPositions.map((pos, i) => (
-        <div
-          key={i}
-          className={styles.pointer}
-          style={{
-            left: `${(1 - pos.x) * 100}%`,
-            top: `${pos.y * 100}%`,
-          }}
-        />
-      ))}
+      {fingerPositions.map((pos, i) => {
+        const { x, y } = toScreenCoords(pos);
+        return (
+          <div
+            key={i}
+            className={styles.pointer}
+            style={{
+              left: `${x}px`,
+              top: `${y}px`,
+            }}
+          />
+        );
+      })}
     </>
   );
 }

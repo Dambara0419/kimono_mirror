@@ -14,17 +14,32 @@ export default function ShutterButton({ videoRef, onCapture, position = 'bottom'
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
-      const MAX_WIDTH = 1280;
-      const scale = Math.min(1, MAX_WIDTH / video.videoWidth);
-      canvas.width = video.videoWidth * scale;
-      canvas.height = video.videoHeight * scale;
+
+      const W_v = video.videoWidth;
+      const H_v = video.videoHeight;
+      const W_c = window.innerWidth;
+      const H_c = window.innerHeight;
+
+      // object-fit: cover と同じクロップ範囲を計算（画面に見えている領域）
+      const coverScale = Math.max(W_c / W_v, H_c / H_v);
+      const cropX = (W_v - W_c / coverScale) / 2;
+      const cropY = (H_v - H_c / coverScale) / 2;
+      const cropW = W_c / coverScale;
+      const cropH = H_c / coverScale;
+
+      // 出力サイズ（長辺1280px以内に収める）
+      const MAX_SIZE = 1280;
+      const outputScale = Math.min(1, MAX_SIZE / Math.max(cropW, cropH));
+      canvas.width = Math.round(cropW * outputScale);
+      canvas.height = Math.round(cropH * outputScale);
+
       const ctx = canvas.getContext('2d');
       if (ctx) {
         if (isFrontCamera) {
           ctx.translate(canvas.width, 0);
           ctx.scale(-1, 1);
         }
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, cropX, cropY, cropW, cropH, 0, 0, canvas.width, canvas.height);
         onCapture(canvas.toDataURL('image/jpeg', 0.85));
       }
     }

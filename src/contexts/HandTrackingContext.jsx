@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useState, useEffect } from 'react';
+import React, { createContext, useContext, useRef, useState, useEffect, useCallback } from 'react';
 
 const HandTrackingContext = createContext(null);
 
@@ -93,8 +93,31 @@ export const HandTrackingProvider = ({ children, videoRef, isEnabled = true }) =
     };
   }, [isEnabled, videoRef]);
 
+  // MediaPipeの正規化座標(0-1)をobject-fit:coverのクロップを考慮した画面ピクセルに変換
+  const toScreenCoords = useCallback((fp) => {
+    const W_c = window.innerWidth;
+    const H_c = window.innerHeight;
+    const W_v = videoRef.current?.videoWidth;
+    const H_v = videoRef.current?.videoHeight;
+
+    if (!W_v || !H_v) {
+      return { x: (1 - fp.x) * W_c, y: fp.y * H_c };
+    }
+
+    const scale = Math.max(W_c / W_v, H_c / H_v);
+    const renderedW = W_v * scale;
+    const renderedH = H_v * scale;
+    const offsetX = (renderedW - W_c) / 2;
+    const offsetY = (renderedH - H_c) / 2;
+
+    return {
+      x: (1 - fp.x) * renderedW - offsetX,
+      y: fp.y * renderedH - offsetY,
+    };
+  }, [videoRef]);
+
   return (
-    <HandTrackingContext.Provider value={{ fingerPositions, isEnabled }}>
+    <HandTrackingContext.Provider value={{ fingerPositions, isEnabled, toScreenCoords }}>
       {children}
     </HandTrackingContext.Provider>
   );
