@@ -8,6 +8,10 @@ dist/
 .env
 .env.local
 .env.*.local
+.env.vercel
+
+# Blob backup (downloaded images)
+blob-backup/
 
 # Editor
 .vscode/

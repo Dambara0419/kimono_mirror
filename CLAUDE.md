@@ -19,10 +19,13 @@ AIを使ったバーチャル着物試着体験アプリ。カメラで撮影し
 ## 開発コマンド
 
 ```bash
-npm run dev    # 開発サーバー起動
-npm run build  # ビルド
-npm run lint   # ESLint
+npm run dev      # 開発サーバー起動
+npm run build    # ビルド
+npm run preview  # ビルド成果物をプレビュー
+npm run lint     # ESLint
 ```
+
+テストフレームワークは未導入（テストコマンドなし）。`GUIDE.md` / `MANUAL.md` にエンドユーザー向け操作マニュアルと仕様書がある。
 
 ## ページ構成
 
@@ -41,7 +44,7 @@ npm run lint   # ESLint
 2. オプション（costumeMode, targetPerson, obiColor, backgroundStyle）も `sessionStorage` に保存
 3. Previewページで `sessionStorage` を読み取り → `costumeMode` に応じて `buildYukataPrompt()` か `buildFurisodePrompt()` でプロンプト生成
 4. `/api/generate` にPOST → Gemini APIで画像生成 → base64で返却
-5. 生成完了後、`/api/upload` に画像をPOST → Vercel Blobに保存（24h有効）→ URLをQRコードで表示
+5. 生成完了後、`/api/upload` に画像をPOST → Vercel Blobに保存 → URLをQRコードで表示。古い画像は `/api/cleanup`（Vercel Cron、1日1回）がアップロードから3日経過分を削除する
 
 ## ストレージ
 
@@ -70,3 +73,14 @@ ShutterButtonは2段階: ホバー/クリックでカウントダウン開始(3-
 - `GEMINI_API_KEY` はサーバーサイドのみ（`process.env.GEMINI_API_KEY`）
 - `api/upload.js` は `BLOB_READ_WRITE_TOKEN` も必要（Vercel Blob）
 - 画像のリクエストボディ上限は10MB（`bodyParser.sizeLimit`）
+
+## デプロイ・認証
+
+- **Basic認証**: `middleware.js` が全ルート（`matcher: '/(.*)'`）にBasic認証をかける。`BASIC_AUTH_USER` / `BASIC_AUTH_PASS` 環境変数で認証情報を設定。イベント会場での限定公開を想定
+- **SPAルーティング**: `vercel.json` の rewrites で `/api/*` 以外をすべて `index.html` に転送。`App.jsx` の BrowserRouter は `basename={import.meta.env.BASE_URL}` を使用
+- **画像の自動削除**: `vercel.json` の `crons` で `/api/cleanup` を1日1回実行し、アップロードから3日経過した Blob を削除。Cron は `Authorization: Bearer ${CRON_SECRET}` を送るため、`middleware.js` はこのトークンに限り Basic認証をスキップする
+- **環境変数**（`.env.example` 参照）:
+  - `GEMINI_API_KEY` - Gemini API（必須）
+  - `BLOB_READ_WRITE_TOKEN` - Vercel Blob（画像共有・削除）
+  - `BASIC_AUTH_USER` / `BASIC_AUTH_PASS` - Basic認証
+  - `CRON_SECRET` - Vercel Cron 認証用（`/api/cleanup` 保護）

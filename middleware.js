@@ -5,6 +5,14 @@ export const config = {
 export default function middleware(request) {
   const basicAuth = request.headers.get('authorization')
 
+  // Vercel Cron からのリクエスト（Bearer CRON_SECRET）は Basic 認証をスキップ
+  if (
+    process.env.CRON_SECRET &&
+    basicAuth === `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return
+  }
+
   if (basicAuth) {
     const [scheme, credentials] = basicAuth.split(' ')
     if (scheme === 'Basic' && credentials) {
