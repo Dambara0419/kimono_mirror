@@ -51,7 +51,9 @@ export default function Home() {
       {isSettingsOpen && (
         <SettingsMenu onClose={() => setIsSettingsOpen(false)} />
       )}
-      
+
+      <span className={styles.version}>v1.0</span>
+
     </div>
   );
 }
