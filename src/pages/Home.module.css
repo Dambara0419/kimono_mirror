@@ -192,3 +192,14 @@
 .settingsButton:hover {
   color: white;
 }
+
+.version {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  z-index: 20;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.35);
+}
